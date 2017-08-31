@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>demo video call</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="room-item">
+      <div id="listUser" class="list" >
+        <h1>list user</h1>
+        <ul>
+          <% if(arr.length) { %>
+            <% arr.forEach(function(e) { %>
+                <li><p class="room-item"><%= e %></p> <button class="room-item" type="button" name="button" onclick='Call("<%=e%>")'>call</button></li>
+              <% }); %>
+              <% }
+           %>
+
+        </ul>
+
+      </div>
+      <div class="notification" id="<%=email%>">
+        <ul>
+          <li>thông báo</li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/main.js"></script>
+  </body>
+</html>

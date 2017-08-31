@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- <script src="/latest-v2.js"></script> -->
+    <script src="/latest-v2.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <!-- <script src="/bundle.js"></script> -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="remotes" ></div>
+    <button type="button"style="position: absolute;bottom:300px;right:100px;margin:0px;" onclick="TurnOffVideo()">turn off video</button>
+    <button type="button"style="position: absolute;bottom:300px;right:0;margin:0px;" onclick="TurnOnVideo()">turn on video</button>
+    <video id="localVideo"  class="<%=email%>" style="    position: absolute;bottom:0px;right: 0;width: 300px;height: 300px;"></video>
+
+    <script src="/room.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var webrtc = new SimpleWebRTC({
+        localVideoEl: 'localVideo',
+        remoteVideosEl: 'remotes',
+        autoRequestMedia: true,
+        detectSpeakingEvents: true
+      });
+      webrtc.on('readyToCall', function () {
+        var url = window.location.href;
+        webrtc.joinRoom(url);
+          console.log(webrtc.capabilities.MediaStream);
+      });
+  //     function showVolume(el, volume) {
+  //                     if (!el) return;
+  //                     if (volume < -45) { // vary between -45 and -20
+  //                         el.style.height = '0px';
+  //                     } else if (volume > -20) {
+  //                         el.style.height = '100%';
+  //                     } else {
+  //                         el.style.height = '' + Math.floor((volume + 100) * 100 / 25 - 220) + '%';
+  //                     }
+  //                 }
+  //
+  //   webrtc.on('videoAdded', function (video, peer) {
+  //
+  //           var remotes = document.getElementById('remotes');
+  //           if (remotes) {
+  //               var container = document.createElement('div');
+  //               var el = document.getElementById(peer ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer');
+  //               if (remotes && el) {
+  //                   remotes.removeChild(el);
+  //               }
+  //               container.style.cssText = ';width:300px;height:300px;float:left;';
+  //               container.className = 'videoContainer';
+  //               container.id = 'container_' + webrtc.getDomId(peer);
+  //               container.appendChild(video);
+  //               video.oncontextmenu = function () { return false; };
+  //
+  //               var vol = document.createElement('div');
+  //               vol.id = 'volume_' + peer.id;
+  //               vol.className = 'volumeBar';
+  //               video.onclick = function () {
+  //                   video.style.width = video.videoWidth + 'px';
+  //                   video.style.height = video.videoHeight + 'px';
+  //               };
+  //               container.appendChild(vol);
+  //               // show the ice connection state
+  //               if (peer && peer.pc) {
+  //                   var connstate = document.createElement('div');
+  //                   connstate.className = 'connectionstate';
+  //                   container.appendChild(connstate);
+  //                   peer.pc.on('iceConnectionStateChange', function (event) {
+  //                       switch (peer.pc.iceConnectionState) {
+  //                       case 'checking':
+  //                           $(connstate).text('Connecting to peer...');
+  //                           break;
+  //                       case 'connected':
+  //                       case 'completed': // on caller side
+  //                           $(connstate).text('Connection established.');
+  //                           break;
+  //                       case 'disconnected':
+  //                           $(connstate).text('Disconnected.');
+  //                           break;
+  //                       case 'failed':
+  //                           $(connstate).text('Connection failed.');
+  //                           break;
+  //                       case 'closed':
+  //                           $(connstate).text('Connection closed.');
+  //                           break;
+  //                       }
+  //                   });
+  //               }
+  //               remotes.appendChild(container);
+  //           }
+  //     });
+  //
+  //     webrtc.on('videoRemoved', function (video, peer) {
+  //         console.log('video removed ', peer);
+  //         var remotes = document.getElementById('remotes');
+  //         var el = document.getElementById(peer ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer');
+  //         if (remotes && el) {
+  //             remotes.removeChild(el);
+  //         }
+  //
+  //     });
+  //
+  //   webrtc.on('localStream', function(stream){
+  //     var test = document.getElementById('test');
+  //     console.log(stream);
+  //
+  //       test.src=stream;
+  //   })
+  //   webrtc.on('volumeChange', function (volume, treshold) {
+  //       showVolume(document.getElementById('localVolume'), volume);
+  //   });
+  //   webrtc.on('remoteVolumeChange', function (peer, volume) {
+  //       showVolume(document.getElementById('volume_' + peer.id), volume);
+  //   });
+  //
+  //   webrtc.on('iceFailed', function (peer) {
+  //       var connstate = document.querySelector('#container_' + webrtc.getDomId(peer) + ' .connectionstate');
+  //       console.log('local fail', connstate);
+  //       if (connstate) {
+  //           connstate.innerText = 'Connection failed.';
+  //           fileinput.disabled = 'disabled';
+  //       }
+  //   });
+  //
+  // // remote p2p/ice failure
+  //   webrtc.on('connectivityError', function (peer) {
+  //       var connstate = document.querySelector('#container_' + webrtc.getDomId(peer) + ' .connectionstate');
+  //       console.log('remote fail', connstate);
+  //       if (connstate) {
+  //           connstate.innerText = 'Connection failed.';
+  //           fileinput.disabled = 'disabled';
+  //       }
+  //   });
+  //
+  //
+    function TurnOffVideo(){
+      webrtc.pauseVideo();
+      console.log(webrtc);
+    }
+    function TurnOnVideo(){
+      webrtc.resumeVideo();
+      console.log(webrtc);
+    }
+  //   if (window.performance) {
+  //     console.info("window.performance work's fine on this browser");
+  //   }
+  //     if (performance.navigation.type == 1) {
+  //       console.info( "This page is reloaded" );
+  //       window.close();
+  //     } else {
+  //       console.info( "This page is not reloaded");
+  //     }
+
+    </script>
+  </body>
+</html>
